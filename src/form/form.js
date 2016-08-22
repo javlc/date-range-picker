@@ -10,7 +10,8 @@ class Form extends Component {
         this.state = {
             fechaInicio: new Date(),
             numeroDias: 7,
-            codigoPais: 'US'
+            codigoPais: 'US',
+            dates = new Map();
         };
 
         this.handleDateChange = this.handleDateChange.bind(this);
@@ -104,6 +105,15 @@ class Form extends Component {
 
         hapi.holidays(parameters, function (err, data) {
           // Insert awesome code here...
+          if(data) {            
+            for(var ii = 0; ii < data.holidays.length; ii++) {
+                this.setState({
+                    dates.set(data.holidays[ii].name, data.holidays[ii].date)
+                }, function() {
+                    console.log("Iteration " + (ii +1);
+                });
+            }
+          }
         });
     }
 
