@@ -1,28 +1,3 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
-}
-
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
-}
-
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
 html {
   font-family: sans-serif;
   -ms-text-size-adjust: 100%;
@@ -279,6 +254,66 @@ th {
   }
 }
 
+/* BEGIN CONTAINER */
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 190px;
+  padding: 20px;
+  color: white;
+}
+.App-header p:only-of-type {
+  margin: 0.5em auto;
+}
+
+.App-intro {
+  font-size: large;
+  margin: 0.5em 0;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+form#calendar {
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+}
+form#calendar div {
+  padding: 3px 5px;
+  margin: 3px auto;
+}
+form#calendar label {
+  text-align: left;
+  display: inline-block;  
+  width: 45%;
+}
+form#calendar input[type="submit"] {
+  padding: 10px 30px;
+  margin-left: 20%;
+  background-color: #01579B;
+  color: #ffffff;
+  font-weight: bold;
+  border: none;
+}
+form#calendar input[type="submit"]:hover {
+  background-color: #f44336;
+}
+
+/* END CONTAINER */
+
+/* BEGIN CALENDAR RANGE */
 .rc-Calendar-header {
   text-align: center;
   font-weight: bolder;
@@ -351,7 +386,7 @@ th {
   background-color: lightgray;
 }
 .rc-Day--outside:hover {
-  background-color: transparent;
+  background-color: lightgray; /*transparent*/
 }
 .rc-Day--event {
   background-color: #eeeeee;
@@ -365,3 +400,5 @@ th {
 .rc-Day--warning {
   background-color: #f0ad4e;
 }
+
+/* END CALENDAR RANGE */
