@@ -105,12 +105,11 @@ class Form extends Component {
 
         hapi.holidays(parameters, function (err, data) {
           // Insert awesome code here...
-          if(data) {            
+          if(data) {
+            let hDates = new Map();
             for(var ii = 0; ii < data.holidays.length; ii++) {
                 this.setState({
-                    dates.set(data.holidays[ii].name, data.holidays[ii].date)
-                }, function() {
-                    console.log("Iteration " + (ii +1);
+                    dates: hDates.set(data.holidays[ii].name, data.holidays[ii].date)
                 });
             }
           }
