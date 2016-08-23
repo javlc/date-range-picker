@@ -11,7 +11,7 @@ class Form extends Component {
             fechaInicio: new Date(),
             numeroDias: 7,
             codigoPais: 'US',
-            dates = new Map();
+            dates: new Map(),
         };
 
         this.handleDateChange = this.handleDateChange.bind(this);
