@@ -88,7 +88,7 @@ class Form extends Component {
         this.handleDaysQty();
         this.handleCountryCode();
 
-        let hapi = new HolidayAPI('d2fc0569-9e32-4b48-8a64-70a0695ab358').v1;
+        let hapi = new HolidayAPI('_my_api_key').v1;
 
         let parameters = {
           // Required
