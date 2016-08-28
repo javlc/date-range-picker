@@ -52,7 +52,7 @@ class Form extends Component {
         let year = parseInt(parts[2], 10);
         
         if (this.isValidDate(initialDate)) {
-            console.log("Fecha armada es: " + day + "," + month + ","+ year);
+            console.log("Fecha armada es: " + day + "," + (month+1) + ","+ year);
 
             this.setState(
                 { fechaInicio: moment([year, month, day]) }, 
@@ -84,12 +84,8 @@ class Form extends Component {
 
     handleSubmit (e) {
         e.preventDefault();
-        this.handleDateChange();
-        this.handleDaysQty();
-        this.handleCountryCode();
 
-        let hapi = new HolidayAPI('_my_api_key').v1;
-
+        let hapi = new HolidayAPI(process.env.REACT_APP_HOLIDAY_KEY).v1;
         let parameters = {
           // Required
           country: 'US',
@@ -99,20 +95,22 @@ class Form extends Component {
           // day:      4,
           // previous  true,
           // upcoming  true,
-          // public:   true,
+          public:   true,
           // pretty:   true,
         };
 
         hapi.holidays(parameters, function (err, data) {
           // Insert awesome code here...
-          if(data) {
-            let hDates = new Map();
-            for(var ii = 0; ii < data.holidays.length; ii++) {
-                this.setState({
-                    dates: hDates.set(data.holidays[ii].name, data.holidays[ii].date)
-                });
+            let hDates = {};
+            try {
+                hDates = data;
+                hDates = JSON.parse(data);
+            } catch (e) {
+                console.error('Unable to parse response as JSON', e);
+                data = {};
             }
-          }
+            return hDates;
+
         });
     }
 
