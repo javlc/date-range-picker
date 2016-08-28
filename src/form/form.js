@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import moment from 'moment';
-import HolidayAPI from 'node-holidayapi';
 
 class Form extends Component {
 
@@ -85,7 +84,8 @@ class Form extends Component {
     handleSubmit (e) {
         e.preventDefault();
 
-        let hapi = new HolidayAPI(process.env.REACT_APP_HOLIDAY_KEY).v1;
+        let querystring = '';
+
         let parameters = {
           // Required
           country: 'US',
@@ -99,19 +99,38 @@ class Form extends Component {
           // pretty:   true,
         };
 
-        hapi.holidays(parameters, function (err, data) {
-          // Insert awesome code here...
-            let hDates = {};
-            try {
-                hDates = data;
-                hDates = JSON.parse(data);
-            } catch (e) {
-                console.error('Unable to parse response as JSON', e);
-                data = {};
-            }
-            return hDates;
+        // https://holidayapi.com/v1/holidays?key=the_key?country=US&year=2016&month=08
+        querystring += 'key=' + process.env.REACT_APP_HOLIDAY_KEY 
+                    + '&country=' + parameters.country 
+                    + '&year=' + parameters.year
+                    + '&public=' + parameters.public;
+        console.log(querystring);   
+        
+        function search(query) {
+            return fetch(`/api/holidays?${query}`, {
+                accept: 'application/json',                
+            }).then(checkStatus)
+            .then(parseJSON);
+        }
 
-        });
+        function checkStatus(response) {
+          if (response.status >= 200 && response.status < 300) {
+            return response;
+          } else {
+            const error = new Error(`HTTP Error: ${response.statusText}`);
+            error.status = response.statusText;
+            error.response = response;
+            console.log(error); // eslint-disable-line no-console
+            throw error;
+          }
+        }
+
+        function parseJSON(response) {
+          return response.json();
+        }
+
+        search(querystring);
+
     }
 
     render () {
