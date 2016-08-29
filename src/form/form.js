@@ -10,12 +10,13 @@ class Form extends Component {
             fechaInicio: new Date(),
             numeroDias: 7,
             codigoPais: 'US',
-            dates: new Map(),
+            dates: {},
         };
 
         this.handleDateChange = this.handleDateChange.bind(this);
         this.handleDaysQty = this.handleDaysQty.bind(this);
         this.handleCountryCode = this.handleCountryCode.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     isValidDate(dateString) {
@@ -104,7 +105,6 @@ class Form extends Component {
                     + '&country=' + parameters.country 
                     + '&year=' + parameters.year
                     + '&public=' + parameters.public;
-        console.log(querystring);   
         
         function search(query) {
             return fetch(`/holidays?${query}`, {
@@ -129,7 +129,14 @@ class Form extends Component {
           return response.json();
         }
 
-        search(querystring).then(result => console.log(result));
+        search(querystring).then(result => {
+            let holidayStr = result.holidays;
+            console.log(holidayStr);
+            this.setState({ dates: holidayStr }, function() {
+                    console.log("Saved dates in form.js state is: ");
+                    console.log(this.state.dates);
+            });
+        });
 
     }
 
