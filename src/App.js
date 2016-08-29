@@ -6,6 +6,17 @@ import Form from './form/form';
 import { Calendar } from 'react-calendar';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      date: moment(),
+      day: '',
+      month: '',
+      year: '',
+    }
+  }
+
   render() {
     return (
       <div className="App">
@@ -19,10 +30,10 @@ class App extends Component {
         </p>
         <Form />
         <hr />        
-        <Calendar startDate={ moment().startOf('year') }
-                  endDate={ moment().endOf('year') }
+        <Calendar startDate={ this.state.date }
+                  endDate={ moment(this.state.date).add(7, 'days').endOf('month') }
                   weekNumbers={ false }
-                  size={12}
+                  // size={12}
                   mods={
                     [
                       {
