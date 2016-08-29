@@ -107,7 +107,7 @@ class Form extends Component {
         console.log(querystring);   
         
         function search(query) {
-            return fetch(`/api/holidays?${query}`, {
+            return fetch(`/holidays?${query}`, {
                 accept: 'application/json',                
             }).then(checkStatus)
             .then(parseJSON);
@@ -129,7 +129,7 @@ class Form extends Component {
           return response.json();
         }
 
-        search(querystring);
+        search(querystring).then(result => console.log(result));
 
     }
 
