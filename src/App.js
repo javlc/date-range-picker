@@ -11,6 +11,7 @@ class App extends Component {
 
     this.state = {
       date: moment(),
+      numberOfDays: 35,
       day: '',
       month: '',
       year: '',
@@ -61,13 +62,13 @@ class App extends Component {
         <Form handleHolidayResponse={this.handleHolidayResponse}/>
         <hr />        
         <Calendar startDate={ this.state.date }
-                  endDate={ moment(this.state.date).add(7, 'days').endOf('month') }
+                  endDate={ moment(this.state.date).add(this.state.numberOfDays, 'days').endOf('month') }
                   weekNumbers={ false }
                   // size={12}
                   mods={
                     [
                       {
-                        date: moment(),
+                        date: this.state.date,
                         classNames: [ 'current' ],
                         component: [ 'day', 'month']
                       }
