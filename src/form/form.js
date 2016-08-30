@@ -89,7 +89,7 @@ class Form extends Component {
 
         let parameters = {
           // Required
-          country: 'US',
+          country: 'CA',
           year:    2016,
           // Optional
           // month:    7,
@@ -104,7 +104,8 @@ class Form extends Component {
         querystring += 'key=' + process.env.REACT_APP_HOLIDAY_KEY 
                     + '&country=' + parameters.country 
                     + '&year=' + parameters.year
-                    + '&public=' + parameters.public;
+                    // + '&public=' + parameters.public
+                    ;
         
         function search(query) {
             return fetch(`/holidays?${query}`, {
@@ -136,6 +137,7 @@ class Form extends Component {
                     console.log("Saved dates in form.js state is: ");
                     console.log(this.state.dates);
             });
+            this.props.handleHolidayResponse(holidayStr);
         });
 
     }
