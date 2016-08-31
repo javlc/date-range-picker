@@ -10,6 +10,10 @@ class App extends Component {
     super(props);
 
     this.state = {
+      startDate: moment(),
+      endDate: moment(this.startDate).add(this.numberOfDays, 'days').endOf('month'),
+      countryCd: 'US',
+      dates: {},
       date: moment(),
       numberOfDays: 35,
       day: '',
@@ -18,13 +22,85 @@ class App extends Component {
       holidays: [],
     }
 
+    this.handleDateChange = this.handleDateChange.bind(this);
+    this.handleDaysQty = this.handleDaysQty.bind(this);
+    this.handleCountryCode = this.handleCountryCode.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+
     this.handleHolidayResponse = this.handleHolidayResponse.bind(this);
   }
+
+  isValidDate(dateString) {
+      // First check for the pattern
+      if(!/^\d{1,2}\/\d{1,2}\/\d{4}$/.test(dateString))
+          return false;
+
+      // Parse the date parts to integers
+      let parts = dateString.split("/");
+      let day = parseInt(parts[0], 10);
+      let month = parseInt(parts[1], 10);
+      let year = parseInt(parts[2], 10);
+
+      // Check the ranges of month and year
+      if(year < 1000 || year > 3000 || month === 0 || month > 12)
+          return false;
+
+      let monthLength = [ 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 ];
+
+      // Adjust for leap years
+      if(year % 400 === 0 || (year % 100 !== 0 && year % 4 === 0))
+          monthLength[1] = 29;
+
+      // Check the range of the day
+      return day > 0 && day <= monthLength[month - 1];
+  }
+
+  handleDateChange (e) {
+      let initialDate = e.target.value;
+      let parts = initialDate.split("/");
+      let day = parseInt(parts[0], 10);
+      let month = parseInt(parts[1], 10) - 1;
+      let year = parseInt(parts[2], 10);
+      
+      if (this.isValidDate(initialDate)) {
+          console.log("Fecha armada es: " + day + "," + (month+1) + ","+ year);
+
+          this.setState(
+              { startDate: moment([year, month, day]) }, 
+              function() {
+                  console.log("Fecha nueva es: " + this.state.startDate.format());
+          });
+
+
+      } else {
+          console.log("Empty or invalid date format. Enter valid date in format dd/mm/yyyy");
+      }
+      console.log("Fecha actual es: " + moment().format());
+
+      return { day:day, month:month, year:year };
+
+  }
+
+  handleDaysQty (e) {
+      let daysQty = parseInt(e.target.value, 10);
+      this.setState({ numberOfDays: daysQty }, function() {
+          console.log("Number of days is: " + this.state.numberOfDays );
+      });
+  }
+
+  handleCountryCode (e) {
+      let countryCode = e.target.value;
+      this.setState({ countryCd: countryCode }, function() {
+          console.log("Country code is: " + this.state.countryCd);
+      });
+  }
+
 
   handleHolidayResponse(data) {
     console.log("Below is data called from parent App: ");
     console.log(data);
     let holidaydates=[];
+    let holidayitem = this.state.holidays.slice();
     for (let key in data) {
       if (data.hasOwnProperty(key)) {
         let holidayobject = data[key];
@@ -34,7 +110,6 @@ class App extends Component {
           }
         }
       }
-      let holidayitem = this.state.holidays.slice();
       if (holidaydates.date === holidaydates.observed) {
         holidayitem.push(holidaydates.date);
         this.setState({ holidays: holidayitem });
@@ -48,6 +123,66 @@ class App extends Component {
     console.log("From state: " + this.state.holidays);
   }
 
+  handleSubmit (e) {
+      e.preventDefault();
+
+      let querystring = '';
+
+      let parameters = {
+        // Required
+        country: this.state.countryCd,
+        year:    2016,
+        // Optional
+        // month:    7,
+        // day:      4,
+        // previous  true,
+        // upcoming  true,
+        public:   true,
+        // pretty:   true,
+      };
+
+      // https://holidayapi.com/v1/holidays?key=the_key?country=US&year=2016&month=08
+      querystring += 'key=' + process.env.REACT_APP_HOLIDAY_KEY 
+                  + '&country=' + parameters.country 
+                  + '&year=' + parameters.year
+                  + '&public=' + parameters.public
+                  ;
+      
+      function search(query) {
+          return fetch(`/holidays?${query}`, {
+              accept: 'application/json',                
+          }).then(checkStatus)
+          .then(parseJSON);
+      }
+
+      function checkStatus(response) {
+        if (response.status >= 200 && response.status < 300) {
+          return response;
+        } else {
+          const error = new Error(`HTTP Error: ${response.statusText}`);
+          error.status = response.statusText;
+          error.response = response;
+          console.log(error); // eslint-disable-line no-console
+          throw error;
+        }
+      }
+
+      function parseJSON(response) {
+        return response.json();
+      }
+
+      search(querystring).then(result => {
+          let holidayStr = result.holidays;
+          console.log(holidayStr);
+          this.setState({ dates: holidayStr }, function() {
+                  console.log("Saved dates in form.js state is: ");
+                  console.log(this.state.dates);
+          });
+          this.handleHolidayResponse(holidayStr);
+      });
+
+  }
+
   render() {
     return (
       <div className="App">
@@ -59,16 +194,22 @@ class App extends Component {
         <p className="App-intro">
           Please enter the requested parameters.
         </p>
-        <Form handleHolidayResponse={this.handleHolidayResponse}/>
+        <Form 
+            handleHolidayResponse={this.handleHolidayResponse} 
+            handleDateChange={this.handleDateChange} 
+            handleDaysQty={this.handleDaysQty} 
+            handleCountryCode={this.handleCountryCode}
+            onSubmit={this.handleSubmit}
+            />
         <hr />        
-        <Calendar startDate={ this.state.date }
-                  endDate={ moment(this.state.date).add(this.state.numberOfDays, 'days').endOf('month') }
+        <Calendar startDate={ this.state.startDate }
+                  endDate={ moment(this.state.startDate).add(this.state.numberOfDays, 'days').endOf('month') }
                   weekNumbers={ false }
                   // size={12}
                   mods={
                     [
                       {
-                        date: this.state.date,
+                        date: this.state.startDate,
                         classNames: [ 'current' ],
                         component: [ 'day', 'month']
                       }
