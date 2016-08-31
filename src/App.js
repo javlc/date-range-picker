@@ -11,10 +11,9 @@ class App extends Component {
 
     this.state = {
       startDate: moment(),
-      endDate: moment(this.startDate).add(this.numberOfDays, 'days').endOf('month'),
+      endDate: moment(),
       countryCd: 'US',
       dates: {},
-      date: moment(),
       numberOfDays: 35,
       day: '',
       month: '',
@@ -184,6 +183,8 @@ class App extends Component {
   }
 
   render() {
+    let endDateCalc = moment(this.state.startDate).add(this.state.numberOfDays, 'days').endOf('month');
+
     return (
       <div className="App">
         <div className="App-header">
@@ -203,7 +204,7 @@ class App extends Component {
             />
         <hr />        
         <Calendar startDate={ this.state.startDate }
-                  endDate={ moment(this.state.startDate).add(this.state.numberOfDays, 'days').endOf('month') }
+                  endDate={endDateCalc} 
                   weekNumbers={ false }
                   // size={12}
                   mods={
