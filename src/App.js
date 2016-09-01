@@ -220,10 +220,11 @@ class App extends Component {
   }
 
   dateRangeMods () {
-    /*let startDayRange = this.state.startDate;
-    let endDateRange = this.state.endDate;*/
-    let startDayRange = moment([2016,1,12]);
-    let endDateRange = moment([2016,1,26]);
+    this.setState({ dateRangeMods: [] });
+    let startDayRange = this.state.startDate;
+    let endDateRange = this.state.endDate;
+    // let startDayRange = moment([2016,1,12]);
+    // let endDateRange = moment([2016,1,26]);
 
     let enumerateDaysBetweenDates = function(startDayRange, endDateRange) {
         let datesWithin = [];
@@ -244,7 +245,7 @@ class App extends Component {
     let finalRange = myRange.map(function(y) {
       return ({
           date: y,
-          classNames: [ 'current' ],
+          classNames: [ 'withinRange' ],
           component: [ 'day' ]
         })
     })
@@ -253,7 +254,7 @@ class App extends Component {
   }
 
   render() {
-    let endDateCalc = moment(this.state.startDate).add(this.state.numberOfDays, 'days').endOf('month');
+    let endDateCalc = moment(this.state.startDate).add(this.state.numberOfDays, 'days').endOf('day');
 
     return (
       <div className="App">

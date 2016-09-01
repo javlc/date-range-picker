@@ -394,6 +394,9 @@ form#calendar input[type="submit"]:hover {
 .rc-Day--current {
   background-color: #428bca;
 }
+.rc-Day--withinRange {
+  background-color: lightgreen;
+}
 .rc-Day--longEvent {
   background-color: #5cb85c;
 }
