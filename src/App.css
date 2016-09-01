@@ -266,6 +266,12 @@ th {
 }
 
 .App-header {
+  background-image:
+  linear-gradient(
+    red, 
+    rgb(255, 255, 0), 
+    green
+  );
   background-color: #222;
   height: 190px;
   padding: 20px;
