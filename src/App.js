@@ -14,11 +14,12 @@ class App extends Component {
       endDate: moment(),
       countryCd: 'US',
       dates: {},
-      numberOfDays: 35,
+      numberOfDays: 0,
       day: '',
       month: '',
       year: '',
       holidays: [],
+      holidayMods:[],
     }
 
     this.handleDateChange = this.handleDateChange.bind(this);
@@ -27,6 +28,7 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
 
     this.handleHolidayResponse = this.handleHolidayResponse.bind(this);
+    this.holidayMods = this.holidayMods.bind(this);
   }
 
   isValidDate(dateString) {
@@ -64,10 +66,17 @@ class App extends Component {
       if (this.isValidDate(initialDate)) {
           console.log("Fecha armada es: " + day + "," + (month+1) + ","+ year);
 
-          this.setState(
-              { startDate: moment([year, month, day]) }, 
-              function() {
-                  console.log("Fecha nueva es: " + this.state.startDate.format());
+          this.setState({ 
+            startDate: moment([year, month, day]),
+            day: day,
+            month: month+1,
+            year: year,
+          }, 
+          function() {
+              console.log("Fecha nueva es: " + this.state.startDate.format());
+              console.log("Día es: " + this.state.day);
+              console.log("Mes es: " + this.state.month);
+              console.log("Año es: " + this.state.year);
           });
 
 
@@ -178,8 +187,35 @@ class App extends Component {
                   console.log(this.state.dates);
           });
           this.handleHolidayResponse(holidayStr);
+          this.holidayMods();
       });
 
+  }
+
+  holidayMods () {
+    let holidaysArray = ['2016-01-01','2016-01-18','2016-02-15','2016-05-30','2016-07-04','2016-09-05','2016-10-10','2016-11-11','2016-11-24','2016-12-25','2016-12-31'];
+    let holidaysMoment = holidaysArray.map(function(x) {
+      return moment(x);
+    });
+
+    let myHolidayMods = this.state.holidayMods;
+
+    for (let hmod in holidaysMoment) {
+      if (holidaysMoment.hasOwnProperty(hmod)) {
+        let hmodObj = {};
+        hmodObj = {
+          date: holidaysMoment[hmod],
+          classNames: [ 'holiday' ],
+          component: [ 'day' ]
+        }
+        myHolidayMods.push(hmodObj);       
+      }
+    }
+    this.setState({
+      holidayMods: myHolidayMods
+    });
+    console.log("Below are the hmodObjs: ");
+    console.log(myHolidayMods);
   }
 
   render() {
@@ -204,18 +240,12 @@ class App extends Component {
             />
         <hr />        
         <Calendar startDate={ this.state.startDate }
-                  endDate={endDateCalc} 
-                  weekNumbers={ false }
+                  endDate={endDateCalc}                  
                   // size={12}
                   mods={
-                    [
-                      {
-                        date: this.state.startDate,
-                        classNames: [ 'current' ],
-                        component: [ 'day', 'month']
-                      }
-                    ]
-                  } />
+                    this.state.holidayMods
+                  } 
+        />
       </div>
     );
   }

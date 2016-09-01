@@ -400,5 +400,8 @@ form#calendar input[type="submit"]:hover {
 .rc-Day--warning {
   background-color: #f0ad4e;
 }
+.rc-Day--holiday {
+  background-color: orange;
+}
 
 /* END CALENDAR RANGE */
