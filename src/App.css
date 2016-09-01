@@ -382,8 +382,8 @@ form#calendar input[type="submit"]:hover {
 }
 .rc-Day--outside {
   cursor: default;
-  color: lightgray; /*#eeeeee;*/
-  background-color: lightgray;
+  color: lightgray !important; /*#eeeeee;*/
+  background-color: lightgray !important;
 }
 .rc-Day--outside:hover {
   background-color: lightgray; /*transparent*/

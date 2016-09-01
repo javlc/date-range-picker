@@ -222,39 +222,44 @@ class App extends Component {
   dateRangeMods () {
     this.setState({ dateRangeMods: [] });
     let startDayRange = this.state.startDate;
-    let endDateRange = this.state.endDate;
-    // let startDayRange = moment([2016,1,12]);
-    // let endDateRange = moment([2016,1,26]);
+    let endDateRange = moment(this.state.startDate).add(this.state.numberOfDays, 'days');
 
-    let enumerateDaysBetweenDates = function(startDayRange, endDateRange) {
-        let datesWithin = [];
+    // let enumerateDaysBetweenDates = function(startDayRange, endDateRange) {
+    //     let datesWithin = [];
 
-        let firstDate = moment(startDayRange).startOf('day');
-        let lastDate = moment(endDateRange).startOf('day');
+    //     let firstDate = moment(startDayRange).startOf('day');
+    //     let lastDate = moment(endDateRange).startOf('day');
 
-        do {
-            /*console.log(firstDate.toDate());*/
-            datesWithin.push(firstDate.clone());
-            firstDate.add(1,'days');
-        } while( firstDate.isSameOrBefore(lastDate) );
+    //     do {
+    //         /*console.log(firstDate.toDate());*/
+    //         datesWithin.push(firstDate.clone());
+    //         firstDate.add(1,'days');
+    //     } while( firstDate.isSameOrBefore(lastDate) );
 
-        return (datesWithin)
-    };
+    //     return (datesWithin)
+    // };
 
-    let myRange = enumerateDaysBetweenDates(startDayRange, endDateRange);
-    let finalRange = myRange.map(function(y) {
-      return ({
-          date: y,
-          classNames: [ 'withinRange' ],
-          component: [ 'day' ]
-        })
-    })
+    // let myRange = enumerateDaysBetweenDates(startDayRange, endDateRange);
+    let finalRange = {
+      startDate: startDayRange,
+      endDate: endDateRange,
+      classNames: [ 'withinRange' ],
+      component: [ 'day' ]  
+    }
+    // let finalRange = myRange.map(function(y) {
+    //   return ({
+    //       date: y,
+    //       classNames: [ 'withinRange' ],
+    //       component: [ 'day' ]
+    //     })
+    // })
 
     this.setState({ dateRangeMods: finalRange });
   }
 
   render() {
-    let endDateCalc = moment(this.state.startDate).add(this.state.numberOfDays, 'days').endOf('day');
+    let endDateCalc = moment(this.state.startDate).add(this.state.numberOfDays, 'days').endOf('month');
+    
 
     return (
       <div className="App">
