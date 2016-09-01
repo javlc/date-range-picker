@@ -20,6 +20,8 @@ class App extends Component {
       year: '',
       holidays: [],
       holidayMods:[],
+      dateRangeMods: [],
+      mods: [],
     }
 
     this.handleDateChange = this.handleDateChange.bind(this);
@@ -29,6 +31,7 @@ class App extends Component {
 
     this.handleHolidayResponse = this.handleHolidayResponse.bind(this);
     this.holidayMods = this.holidayMods.bind(this);
+    this.dateRangeMods = this.dateRangeMods.bind(this);
   }
 
   isValidDate(dateString) {
@@ -212,6 +215,41 @@ class App extends Component {
     });
     console.log("Below are the hmodObjs: ");
     console.log(myHolidayMods);
+
+    this.dateRangeMods();
+  }
+
+  dateRangeMods () {
+    /*let startDayRange = this.state.startDate;
+    let endDateRange = this.state.endDate;*/
+    let startDayRange = moment([2016,1,12]);
+    let endDateRange = moment([2016,1,26]);
+
+    let enumerateDaysBetweenDates = function(startDayRange, endDateRange) {
+        let datesWithin = [];
+
+        let firstDate = moment(startDayRange).startOf('day');
+        let lastDate = moment(endDateRange).startOf('day');
+
+        do {
+            /*console.log(firstDate.toDate());*/
+            datesWithin.push(firstDate.clone());
+            firstDate.add(1,'days');
+        } while( firstDate.isSameOrBefore(lastDate) );
+
+        return (datesWithin)
+    };
+
+    let myRange = enumerateDaysBetweenDates(startDayRange, endDateRange);
+    let finalRange = myRange.map(function(y) {
+      return ({
+          date: y,
+          classNames: [ 'current' ],
+          component: [ 'day' ]
+        })
+    })
+
+    this.setState({ dateRangeMods: finalRange });
   }
 
   render() {
@@ -239,7 +277,7 @@ class App extends Component {
                   endDate={endDateCalc}                  
                   // size={12}
                   mods={
-                    this.state.holidayMods
+                    this.state.holidayMods.concat(this.state.dateRangeMods)
                   } 
         />
       </div>
