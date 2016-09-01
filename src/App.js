@@ -14,7 +14,7 @@ class App extends Component {
       endDate: moment(),
       countryCd: 'US',
       dates: {},
-      numberOfDays: 0,
+      numberOfDays: 7,
       day: '',
       month: '',
       year: '',
@@ -107,25 +107,19 @@ class App extends Component {
   handleHolidayResponse(data) {
     console.log("Below is data called from parent App: ");
     console.log(data);
-    let holidaydates=[];
+    this.setState({ holidays:[] });
     let holidayitem = this.state.holidays.slice();
     for (let key in data) {
-      if (data.hasOwnProperty(key)) {
-        let holidayobject = data[key];
-        for (let k in holidayobject) {
-          if (holidayobject.hasOwnProperty(k)) {
-            holidaydates = holidayobject[k];
-          }
+      if (data.hasOwnProperty(key)) {        
+        if (data[key][0].date === data[key][0].observed) {
+          holidayitem.push(data[key][0].date);
+          this.setState({ holidays: holidayitem });
+          console.log("Date: " + data[key][0].date + " - " + data[key][0].name);
+        } else {
+          holidayitem.push(data[key][0].observed);
+          this.setState({ holidays: data[key][0].observed });
+          console.log("Observed: " + data[key][0].observed + " - " + data[key][0].name);
         }
-      }
-      if (holidaydates.date === holidaydates.observed) {
-        holidayitem.push(holidaydates.date);
-        this.setState({ holidays: holidayitem });
-        console.log("Date: " + holidaydates.date + " - " + holidaydates.name);
-      } else {
-        holidayitem.push(holidaydates.observed);
-        this.setState({ holidays: holidaydates.observed });
-        console.log("Observed: " + holidaydates.observed + " - " + holidaydates.name);
       }
     }
     console.log("From state: " + this.state.holidays);
@@ -193,11 +187,13 @@ class App extends Component {
   }
 
   holidayMods () {
-    let holidaysArray = ['2016-01-01','2016-01-18','2016-02-15','2016-05-30','2016-07-04','2016-09-05','2016-10-10','2016-11-11','2016-11-24','2016-12-25','2016-12-31'];
+    console.log("This is the state holidays from holidayMods()");
+    console.log(this.state.holidays);
+    let holidaysArray = this.state.holidays;
     let holidaysMoment = holidaysArray.map(function(x) {
       return moment(x);
     });
-
+    this.setState({ holidayMods: [] });
     let myHolidayMods = this.state.holidayMods;
 
     for (let hmod in holidaysMoment) {
