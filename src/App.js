@@ -224,35 +224,53 @@ class App extends Component {
     let startDayRange = this.state.startDate;
     let endDateRange = moment(this.state.startDate).add(this.state.numberOfDays, 'days');
 
-    // let enumerateDaysBetweenDates = function(startDayRange, endDateRange) {
-    //     let datesWithin = [];
+    let enumerateWeekendsBetweenDates = function(startDayRange, endDateRange) {
+        let weekendsWithin = [];
 
-    //     let firstDate = moment(startDayRange).startOf('day');
-    //     let lastDate = moment(endDateRange).startOf('day');
+        let firstDate = moment(startDayRange).startOf('day');
+        let lastDate = moment(endDateRange).startOf('day');
 
-    //     do {
-    //         /*console.log(firstDate.toDate());*/
-    //         datesWithin.push(firstDate.clone());
-    //         firstDate.add(1,'days');
-    //     } while( firstDate.isSameOrBefore(lastDate) );
+        do {
+            /*console.log(firstDate.toDate());*/
+            if (firstDate.day() === 0 || firstDate.day() === 6) {
+              weekendsWithin.push(firstDate.clone());
+              console.log(firstDate.toDate());
+            }
+            firstDate.add(1,'days');
+        } while( firstDate.isSameOrBefore(lastDate) );
 
-    //     return (datesWithin)
-    // };
+        return (weekendsWithin)
+    };
 
-    // let myRange = enumerateDaysBetweenDates(startDayRange, endDateRange);
-    let finalRange = {
+    let myRange = enumerateWeekendsBetweenDates(startDayRange, endDateRange);
+    console.log(myRange);
+
+    let finalRange = [{
       startDate: startDayRange,
       endDate: endDateRange,
       classNames: [ 'withinRange' ],
-      component: [ 'day' ]  
-    }
-    // let finalRange = myRange.map(function(y) {
-    //   return ({
-    //       date: y,
-    //       classNames: [ 'withinRange' ],
-    //       component: [ 'day' ]
-    //     })
-    // })
+      component: [ 'day', ]
+    },
+    {
+      date: startDayRange,
+      classNames: [ 'withinRange' ],
+      component: [ 'month' ]
+    },
+    {
+      date: endDateRange,
+      classNames: [ 'withinRange' ],
+      component: [ 'month' ]
+    }];
+
+    let weekendRange = myRange.map(function(z) {
+      return ({
+        date: z,
+        classNames: [ 'weekEnd' ],
+        component: [ 'day' ]
+      })
+    });
+    finalRange = finalRange.concat(weekendRange);
+    console.log(finalRange);
 
     this.setState({ dateRangeMods: finalRange });
   }

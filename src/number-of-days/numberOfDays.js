@@ -4,7 +4,7 @@ class NumberOfDays extends Component {
     render() {
         return (
             <div className="number-days">
-                <label>How many days ahead?</label>
+                <label>How many days?</label>
                 <input 
                     type="text" 
                     placeholder="Enter days quantity" 
