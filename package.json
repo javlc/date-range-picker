@@ -1,6 +1,7 @@
 {
   "name": "date-range-picker",
-  "version": "0.0.1",
+  "homepage": "http://javlc.github.io/date-range-picker",
+  "version": "0.1.0",
   "private": true,
   "proxy": "https://holidayapi.com/v1",
   "devDependencies": {
