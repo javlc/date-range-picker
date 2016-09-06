@@ -4,8 +4,12 @@ class CountryCode extends Component {
     render() {
         return (
             <div className="country-code">
-                <label>Código de país</label>
-                <input type="text" placeholder="Ingrese código de país" />
+                <label>Country Code</label>
+                <input 
+                    type="text" 
+                    placeholder="Enter country code" 
+                    onBlur={this.props.onBlur}
+                />
             </div>
         );
     }
