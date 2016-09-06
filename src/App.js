@@ -108,8 +108,8 @@ class App extends Component {
 
 
   handleHolidayResponse(data) {
-    console.log("Below is data called from parent App: ");
-    console.log(data);
+    /*console.log("Below is data called from parent App: ");
+    console.log(data);*/
     this.setState({ holidays:[] });
     let holidayitem = this.state.holidays.slice();
     for (let key in data) {
@@ -178,10 +178,10 @@ class App extends Component {
 
       search(querystring).then(result => {
           let holidayStr = result.holidays;
-          console.log(holidayStr);
+          /*console.log(holidayStr);*/
           this.setState({ dates: holidayStr }, function() {
-                  console.log("Saved dates in form.js state is: ");
-                  console.log(this.state.dates);
+                  console.log("Saved dates in form.js state");
+                  /*console.log(this.state.dates);*/
           });
           this.handleHolidayResponse(holidayStr);
           this.holidayMods();
@@ -190,8 +190,8 @@ class App extends Component {
   }
 
   holidayMods () {
-    console.log("This is the state holidays from holidayMods()");
-    console.log(this.state.holidays);
+    /*console.log("This is the state holidays from holidayMods()");
+    console.log(this.state.holidays);*/
     let holidaysArray = this.state.holidays;
     let holidaysMoment = holidaysArray.map(function(x) {
       return moment(x);
@@ -213,8 +213,8 @@ class App extends Component {
     this.setState({
       holidayMods: myHolidayMods
     });
-    console.log("Below are the hmodObjs: ");
-    console.log(myHolidayMods);
+    /*console.log("Below are the hmodObjs: ");
+    console.log(myHolidayMods);*/
 
     this.dateRangeMods();
   }
@@ -234,7 +234,7 @@ class App extends Component {
             /*console.log(firstDate.toDate());*/
             if (firstDate.day() === 0 || firstDate.day() === 6) {
               weekendsWithin.push(firstDate.clone());
-              console.log(firstDate.toDate());
+              /*console.log(firstDate.toDate());*/
             }
             firstDate.add(1,'days');
         } while( firstDate.isSameOrBefore(lastDate) );
@@ -243,7 +243,7 @@ class App extends Component {
     };
 
     let myRange = enumerateWeekendsBetweenDates(startDayRange, endDateRange);
-    console.log(myRange);
+    /*console.log(myRange);*/
 
     let finalRange = [{
       startDate: startDayRange,
@@ -270,7 +270,7 @@ class App extends Component {
       })
     });
     finalRange = finalRange.concat(weekendRange);
-    console.log(finalRange);
+    /*console.log(finalRange);*/
 
     this.setState({ dateRangeMods: finalRange });
   }

@@ -408,8 +408,9 @@ form#calendar input[type="submit"]:hover {
 .rc-Month--withinRange .rc-Day--withinRange {
   color: black;
 } 
-.rc-Day--withinRange {
-  background-color: lightgreen !important;
+.rc-Month--withinRange .rc-Day--withinRange,
+ .rc-Day--withinRange {
+  background-color: lightgreen;
   color: black;
 }
 .rc-Day--longEvent {
@@ -418,11 +419,11 @@ form#calendar input[type="submit"]:hover {
 .rc-Day--warning {
   background-color: #f0ad4e;
 }
-.rc-Day--holiday {
+.rc-Day--withinRange.rc-Day--holiday {
   background-color: orange !important;
 }
 
 .rc-Day--withinRange.rc-Day--weekEnd {
-  background-color: yellow !important;
+  background-color: yellow;
 }
 /* END CALENDAR RANGE */
