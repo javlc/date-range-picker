@@ -155,7 +155,8 @@ class App extends Component {
       
       function search(query) {
           return fetch(`/holidays?${query}`, {
-              accept: 'application/json',                
+              accept: 'application/json',
+              mode: 'no-cors'
           }).then(checkStatus)
           .then(parseJSON);
       }
