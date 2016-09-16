@@ -154,7 +154,7 @@ class App extends Component {
                   ;
       
       function search(query) {
-          return fetch(`/holidays?${query}`, {
+          return fetch(`https://holidayapi.com/v1/holidays?${query}`, {
               accept: 'application/json',
               mode: 'no-cors'
           }).then(checkStatus)
